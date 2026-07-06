@@ -2,19 +2,31 @@
 
 import { signInWithPopup, signInWithRedirect } from 'firebase/auth'
 import { auth, googleProvider } from '@/lib/firebase/client'
-import { useRouter } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useState, useEffect, Suspense } from 'react'
 import { useAuth } from '@/lib/firebase/auth-context'
 
 export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginInner />
+    </Suspense>
+  )
+}
+
+function LoginInner() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const invitedFamilyId = searchParams.get('family')
   const { user, loading } = useAuth()
   const [signingIn, setSigningIn] = useState(false)
   const [error, setError] = useState('')
 
   useEffect(() => {
-    if (!loading && user) router.push('/onboarding')
-  }, [user, loading, router])
+    if (!loading && user) {
+      router.push(invitedFamilyId ? `/onboarding?family=${invitedFamilyId}` : '/onboarding')
+    }
+  }, [user, loading, invitedFamilyId, router])
 
   async function signInWithGoogle() {
     setSigningIn(true)

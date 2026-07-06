@@ -96,8 +96,11 @@ export default function TodayPage() {
                 <div><b style={{ display: 'block', fontSize: 14 }}>יום אלרגן: {planDay.week.allergen.name}</b><span style={{ fontSize: 11.5, color: 'var(--text-light)' }}>שבוע {planDay.week.n} · {planDay.dayLabel}{planDay.note ? ` · ${planDay.note}` : ''}</span></div>
               </div>
               <div style={{ background: 'var(--allergen-pale)', border: '1px solid var(--allergen-border)', borderRadius: 10, padding: '8px 11px', fontSize: 12, color: 'var(--allergen)', fontWeight: 700, marginBottom: 8 }}>🚨 {planDay.week.allergen.food}</div>
-              <div style={{ background: '#FFF9F0', border: '1px solid #F0E2C8', borderRadius: 10, padding: '8px 11px', fontSize: 11.5, color: 'var(--text-mid)', lineHeight: 1.6, marginBottom: 10 }}>
+              <div style={{ background: '#FFF9F0', border: '1px solid #F0E2C8', borderRadius: 10, padding: '8px 11px', fontSize: 11.5, color: 'var(--text-mid)', lineHeight: 1.6, marginBottom: 8 }}>
                 <b style={{ color: 'var(--text-dark)' }}>👨‍🍳 איך מכינים:</b> {planDay.week.allergen.recipe}
+              </div>
+              <div style={{ background: 'var(--sage-pale)', borderRadius: 10, padding: '8px 11px', fontSize: 11.5, color: 'var(--text-mid)', lineHeight: 1.6, marginBottom: 10 }}>
+                🍽️ <b style={{ color: 'var(--sage)' }}>בנוסף לאלרגן:</b> מגישים ארוחה רגילה ממזונות שכבר מוכרים (אבוקדו, גזר, מה שהיא אוהבת). האלרגן הוא תוספת קטנה בתחילת ארוחת הבוקר — לא הארוחה כולה.
               </div>
             </>
           ) : (

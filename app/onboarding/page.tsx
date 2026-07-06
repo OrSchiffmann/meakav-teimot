@@ -19,13 +19,21 @@ export default function OnboardingPage() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    if (!user) return
+    if (!loading && !user) {
+      router.replace(invitedFamilyId ? `/login?family=${invitedFamilyId}` : '/login')
+    }
+  }, [user, loading, invitedFamilyId, router])
+
+  useEffect(() => {
+    if (!user || invitedFamilyId) return
     get(ref(db, `users/${user.uid}/familyId`)).then(snap => {
       if (snap.val()) router.push('/')
     })
-  }, [user, router])
+  }, [user, invitedFamilyId, router])
 
-  if (loading || !user) return null
+  if (loading || !user) {
+    return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-light)', fontSize: 13 }}>טוען...</div>
+  }
 
   async function joinFamily() {
     if (!invitedFamilyId || !user) return

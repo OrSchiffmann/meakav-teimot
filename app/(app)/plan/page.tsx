@@ -39,8 +39,8 @@ export default function PlanPage() {
   return (
     <>
       <PageHeader emoji="📋" title="תכנית 8 השבועות" subtitle="לחצו על יום לפתיחת תיעוד" />
-      <div style={{ background: '#FFF7E8', border: '1px solid #F0DDB0', borderRadius: 12, padding: '10px 13px', fontSize: 11.5, color: '#7A5F1E', marginBottom: 14 }}>
-        💡 לחיצה על כל יום בתכנית פותחת תיעוד עבור התאריך המתאים לו בפועל.
+      <div style={{ background: '#FFF7E8', border: '1px solid #F0DDB0', borderRadius: 12, padding: '10px 13px', fontSize: 11.5, color: '#7A5F1E', marginBottom: 14, lineHeight: 1.7 }}>
+        💡 <b>איך קוראים את התכנית:</b> מה שמופיע בכל יום הוא <b>החידוש</b> של אותו יום — בנוסף אליו תמיד מגישים גם מזונות שכבר מוכרים. ביום אלרגן, האלרגן הוא תוספת קטנה בתחילת ארוחת הבוקר והשאר ארוחה רגילה. לחיצה על יום פותחת תיעוד.
       </div>
 
       {WEEKS.map(w => {
