@@ -1,0 +1,209 @@
+export type DayType = 'new' | 'repeat' | 'allergen'
+
+export interface PlanDay {
+  food: string | null
+  emoji: string | null
+  type: DayType
+}
+
+export interface WeekPlan {
+  n: number
+  title: string
+  meals: string
+  qty: string
+  texture: string
+  allergen: { name: string; food: string; emoji: string; recipe: string }
+  days: PlanDay[]
+  tip: string
+}
+
+export const FOOD_TIPS: Record<string, string> = {
+  'אבוקדו מרוסק': 'מועכים מזלג ישירות בצלחת — לא צריך בישול. בשל = כהה וסוגר בקלות.',
+  'אגס מבושל': 'מבשלים רבע אגס קלוף ב-2 כפות מים עד ריכוך, מועכים. מתוק טבעי שתינוקות אוהבים.',
+  'קישוא מאודה': 'חותכים לפרוסות ואודים 8-10 דקות. מועכים — סמיכות נחמדה בלי צורך בהוספה.',
+  'גזר מבושל': 'מבשלים עד רכות מוחלטת (15-20 דק׳), מועכים עם מעט מי הבישול. מתוק וצבעוני.',
+  'תפוח מבושל': 'רבע תפוח קלוף + כף מים, מכוסה במיקרו 3 דק׳ או בסיר. דומה לקומפוט.',
+  'ברוקולי מאודה': 'רק הפרחים, מאודים 8 דק׳. מועכים היטב — הריח חזק בבישול אבל הטעם עדין.',
+  'כרובית מאודה': 'מאדים 10 דק׳, מועכים עם מעט חלב אם לסמיכות קרמית.',
+  'אפרסק מרוסק': 'אפרסק בשל מאוד — מועכים גולמי (בלי בישול) אם בשל מאוד, אחרת מבשלים 5 דק׳.',
+  'שעועית ירוקה': 'מבשלים 12-15 דק׳, מועכים ומסננים לסיר — הקליפות יכולות להיות קשות.',
+  'משמש מבושל': 'טרי: מבשלים 5 דק׳. קפוא: מצוין ומהיר יותר. מתוק ועשיר בברזל.',
+  'תירס מרוסק': 'תירס קפוא מבושל, מרוסק ומסונן דרך מסננת — מסיר קליפות. מתוק מאוד.',
+  'דייסת אורז מלא': 'אורז מלא מבושל 30 דק׳ + מים נוספים + בלנדר. קרמי ומזין.',
+  'אפונה ירוקה': 'קפואה מצוינת — מבשלים 5 דק׳, מרוסקת ומסוננת. צבע ירוק עז שתינוקות סקרנים לגביו.',
+  'סלק מבושל': 'סלק מבושל/אפוי קנוי (ללא חומץ!) מרוסק. צבע ורוד עז — לא לבהל מצואה ורודה אחר כך 😂',
+  'נקטרינה מרוסקת': 'בשלה מאוד — גולמית ומרוסקת, ללא קליפה. עסיסית וטעימה.',
+  'קינואה מבושלת': 'מבשלים לפי הוראות + מרסקים. עשירה בחלבון. אפשר לערבב עם ירק.',
+  'חציל אפוי מרוסק': 'אופים בתנור 200° שלם 40 דק׳, מוציאים את הבשר — דומה לבבא גנוש עדין.',
+  'תות שדה מרוסק': 'טרי ומרוסק היטב. לתת בבידוד — לא אלרגן רשמי אבל כמה תינוקות רגישים.',
+  'אבטיח מרוסק (ללא גרעינים)': 'מרוסק ומסונן — עסיסי ומרענן. לוודא ללא גרעינים.',
+  'מנגו מרוסק': 'בשל מאוד — מרוסק גולמי. מתוק מאוד, בד"כ ״להיט״ על תינוקות.',
+  'פסטת חיטה מלאה רכה': 'פסטה קטנה (אורזו/פרפריות קטנות) מבושלת עד רכות מוחלטת, מרוסקת.',
+  'עגבניה מבושלת קלופה': 'מבשלים 10 דק׳, קולפים, מועכים. לא לתת גולמי — חומציות גבוהה.',
+  'פלפל אדום צלוי וקלוף': 'צולים בתנור/גז, עוטפים בשקית ו-5 דק׳ — הקליפה יורדת בקלות. מתוק ועדין.',
+  'תפוז - פלחים רכים': 'מפרידים לפלחים וקורעים קרום הפנימי — הבשר הרך בלבד. מתוק ומיצי.',
+}
+
+export const DAY_LABELS = ['א׳', 'ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו׳', 'ש׳']
+export const BASE_FOODS = 5
+export const TOTAL_FOODS = 37
+
+export const WEEKS: WeekPlan[] = [
+  {
+    n: 1, title: 'אבוקדו וגלוטן', meals: 'ארוחה אחת ביום (בוקר)', qty: '1-2 כפיות', texture: 'מחית חלקה ודלילה',
+    allergen: { name: 'גלוטן', food: 'בייביביס (פצפוצי חיטה) או דייסת שיבולת שועל', emoji: '🌾', recipe: 'אפשרות 1: בייביביס — חטיף תינוקות עם חיטה, רך ומתאים. אפשרות 2: 1 כף שיבולת שועל + 3 כפות מים, מבשלים 5 דק׳ תוך כדי ערבוב, מדללים עם חלב אם. ניתן לערבב עם אבוקדו או גזר מרוסק לטעם נעים יותר.' },
+    days: [
+      { food: 'אבוקדו מרוסק', emoji: '🥑', type: 'new' },
+      { food: 'אבוקדו', emoji: '🥑', type: 'repeat' },
+      { food: null, emoji: null, type: 'allergen' },
+      { food: 'אגס מבושל', emoji: '🍐', type: 'new' },
+      { food: 'אגס', emoji: '🍐', type: 'repeat' },
+      { food: 'קישוא מאודה', emoji: '🥒', type: 'new' },
+      { food: 'קישוא', emoji: '🥒', type: 'repeat' },
+    ],
+    tip: 'כפית אחת-שתיים מספיקות בהתחלה.',
+  },
+  {
+    n: 2, title: 'ירקות שורש וביצה', meals: 'ארוחה אחת ביום (בוקר)', qty: '2-3 כפיות', texture: 'מחית חלקה, מעט סמיכה',
+    allergen: { name: 'ביצה', food: 'חלמון קשה מרוסק עם מחית גזר', emoji: '🥚', recipe: 'מבשלים ביצה 10 דק׳ (קשה), מפרידים חלמון בלבד. מועכים עם כפית-שתיים מחית גזר — הגזר מרכך את הטעם ומוסיף מתיקות. לא חלבון בשלב זה!' },
+    days: [
+      { food: 'גזר מבושל', emoji: '🥕', type: 'new' },
+      { food: 'גזר', emoji: '🥕', type: 'repeat' },
+      { food: null, emoji: null, type: 'allergen' },
+      { food: 'תפוח מבושל', emoji: '🍎', type: 'new' },
+      { food: 'תפוח', emoji: '🍎', type: 'repeat' },
+      { food: 'ברוקולי מאודה', emoji: '🥦', type: 'new' },
+      { food: 'ברוקולי', emoji: '🥦', type: 'repeat' },
+    ],
+    tip: 'מתחילים מחלמון בלבד, לא חלבון.',
+  },
+  {
+    n: 3, title: 'עוד ירקות וחלב', meals: 'ארוחה אחת ביום (בוקר)', qty: '1 כף', texture: 'מחית סמיכה, ללא סינון',
+    allergen: { name: 'חלב פרה', food: 'יוגורט טבעי עם מחית פרי', emoji: '🥛', recipe: 'יוגורט טבעי 3% שומן (לא 0%, לא ממותק) — כף אחת. אפשר לערבב עם כפית מחית אפרסק או אגס לטעם עדין יותר. יוגורט הוא מזון, לא תחליף לחלב אם!' },
+    days: [
+      { food: 'כרובית מאודה', emoji: '🥬', type: 'new' },
+      { food: 'כרובית', emoji: '🥬', type: 'repeat' },
+      { food: null, emoji: null, type: 'allergen' },
+      { food: 'אפרסק מרוסק', emoji: '🍑', type: 'new' },
+      { food: 'אפרסק', emoji: '🍑', type: 'repeat' },
+      { food: 'שעועית ירוקה', emoji: '🫘', type: 'new' },
+      { food: 'שעועית ירוקה', emoji: '🫘', type: 'repeat' },
+    ],
+    tip: 'יוגורט הוא מזון, לא תחליף לחלב אם/פורמולה.',
+  },
+  {
+    n: 4, title: 'מעבר לשתי ארוחות + בוטנים', meals: 'בוקר קבוע + ניסיון ארוחת ערב', qty: 'בוקר: 1-2 כפות · ערב: 1 כפית', texture: 'מחית סמיכה',
+    allergen: { name: 'בוטנים', food: 'חמאת בוטנים דקה על מחית תפוח', emoji: '🥜', recipe: '¼ כפית חמאת בוטנים חלקה (לא עם גושים!) + 2 כפות מים חמים — מערבבים עד לסמיכות דלילה לגמרי. ניתן לערבב לתוך מחית תפוח — הטעם טעים יותר. לעולם לא סמיך או שלם!' },
+    days: [
+      { food: 'משמש מבושל', emoji: '🍑', type: 'new' },
+      { food: 'משמש', emoji: '🍑', type: 'repeat' },
+      { food: null, emoji: null, type: 'allergen' },
+      { food: 'תירס מרוסק', emoji: '🌽', type: 'new' },
+      { food: 'תירס', emoji: '🌽', type: 'repeat' },
+      { food: 'דייסת אורז מלא', emoji: '🍚', type: 'new' },
+      { food: 'דייסת אורז', emoji: '🍚', type: 'repeat' },
+    ],
+    tip: 'בוטנים תמיד מדוללים היטב, לעולם לא סמיכים או שלמים.',
+  },
+  {
+    n: 5, title: 'שתי ארוחות קבועות + אגוזי עץ', meals: 'שתי ארוחות ביום', qty: 'בוקר: 2 כפות · ערב: 1-2 כפות', texture: 'מחית עם גושים רכים קטנים',
+    allergen: { name: 'אגוזי עץ', food: 'חמאת שקדים דקה עם בננה', emoji: '🌰', recipe: '¼ כפית חמאת שקדים (או קשיו) חלקה + 2 כפות מים חמים — מערבבים לסמיכות דלילה. טעים במיוחד עם מעט בננה מרוסקת. חמאת שקדים בריאה יותר מחמאת בוטנים ויש לה טעם עדין.' },
+    days: [
+      { food: 'אפונה ירוקה', emoji: '🟢', type: 'new' },
+      { food: 'אפונה', emoji: '🟢', type: 'repeat' },
+      { food: null, emoji: null, type: 'allergen' },
+      { food: 'סלק מבושל', emoji: '🍠', type: 'new' },
+      { food: 'סלק', emoji: '🍠', type: 'repeat' },
+      { food: 'נקטרינה מרוסקת', emoji: '🍑', type: 'new' },
+      { food: 'נקטרינה', emoji: '🍑', type: 'repeat' },
+    ],
+    tip: 'אגוזי עץ תמיד כחמאה מדוללת, לעולם לא שלמים.',
+  },
+  {
+    n: 6, title: 'מרקם עם גושים + שומשום', meals: 'שתי ארוחות ביום', qty: 'בוקר: 2-3 כפות · ערב: 2 כפות', texture: 'מרוסק עם גושים רכים',
+    allergen: { name: 'שומשום', food: 'טחינה גולמית מדוללת עם לימון', emoji: '🫙', recipe: '½ כפית טחינה גולמית (גרעינית — לא מבושלת!) + 2 כפות מים + כמה טיפות לימון — מערבבים לסמיכות דלילה. הלימון מנטרל את המרירות. אפשר גם לערבב עם מחית גזר או סלק.' },
+    days: [
+      { food: 'קינואה מבושלת', emoji: '🌾', type: 'new' },
+      { food: 'קינואה', emoji: '🌾', type: 'repeat' },
+      { food: null, emoji: null, type: 'allergen' },
+      { food: 'חציל אפוי מרוסק', emoji: '🍆', type: 'new' },
+      { food: 'חציל', emoji: '🍆', type: 'repeat' },
+      { food: 'תות שדה מרוסק', emoji: '🍓', type: 'new' },
+      { food: 'תות שדה', emoji: '🍓', type: 'repeat' },
+    ],
+    tip: 'תות שדה - להגיש בבידוד ולעקוב, לא אלרגן קלאסי אך רגיש.',
+  },
+  {
+    n: 7, title: 'קראת אצבעות ראשונות + דגים', meals: 'שתי ארוחות ביום', qty: 'בוקר: 3 כפות · ערב: 2-3 כפות', texture: 'מרוסק/קצוץ + פיסות רכות לתרגול',
+    allergen: { name: 'דגים', food: 'סלמון מאודה עם לימון', emoji: '🐟', recipe: 'פילה סלמון טרי — מאדים 10-12 דק׳ (עד שמתפורר). בודקים עצמות ביסודיות עם האצבעות! מרסקים עם מחית ירק (גזר/קישוא) — מנטרל ריח דגים. הסלמון עדין וטעים יחסית לתינוקות.' },
+    days: [
+      { food: 'אבטיח מרוסק (ללא גרעינים)', emoji: '🍉', type: 'new' },
+      { food: 'אבטיח', emoji: '🍉', type: 'repeat' },
+      { food: null, emoji: null, type: 'allergen' },
+      { food: 'מנגו מרוסק', emoji: '🥭', type: 'new' },
+      { food: 'מנגו', emoji: '🥭', type: 'repeat' },
+      { food: 'פסטת חיטה מלאה רכה', emoji: '🍝', type: 'new' },
+      { food: 'פסטה', emoji: '🍝', type: 'repeat' },
+    ],
+    tip: 'אפשר להניח לצד המחית רצועות רכות לתפיסה ביד, בהשגחה צמודה.',
+  },
+  {
+    n: 8, title: 'סיום המחזור + סויה', meals: 'שתי ארוחות ביום', qty: 'בוקר: 3-4 כפות · ערב: 3 כפות', texture: 'מרוסק/קצוץ + פיסות רכות',
+    allergen: { name: 'סויה', food: 'טופו רך עם גזר ושמן זית', emoji: '🌱', recipe: 'טופו סילקן (רך) — אין צורך בבישול, מרסקים מזלג. מוסיפים כמה טיפות שמן זית ומעט מחית גזר — הופך אותו לטעים יותר. עשיר בחלבון, מרקם חלק.' },
+    days: [
+      { food: 'עגבניה מבושלת קלופה', emoji: '🍅', type: 'new' },
+      { food: 'עגבניה', emoji: '🍅', type: 'repeat' },
+      { food: null, emoji: null, type: 'allergen' },
+      { food: 'פלפל אדום צלוי וקלוף', emoji: '🫑', type: 'new' },
+      { food: 'פלפל', emoji: '🫑', type: 'repeat' },
+      { food: 'תפוז - פלחים רכים', emoji: '🍊', type: 'new' },
+      { food: 'תפוז', emoji: '🍊', type: 'repeat' },
+    ],
+    tip: 'בסיום השבוע - 37 מזונות מוכרים כולל כל 8 האלרגנים. ממשיכים להגיש כל אלרגן 2-3 פעמים בשבוע.',
+  },
+]
+
+export interface FlatPlanDay extends PlanDay {
+  week: WeekPlan
+  dayIndex: number
+  dayLabel: string
+  globalIndex: number
+}
+
+export const PLAN_DAYS: FlatPlanDay[] = WEEKS.flatMap((w) =>
+  w.days.map((d, i) => ({
+    ...d,
+    week: w,
+    dayIndex: i,
+    dayLabel: DAY_LABELS[i],
+    globalIndex: (w.n - 1) * 7 + i,
+  }))
+)
+
+export function addDays(date: Date, n: number): Date {
+  const d = new Date(date)
+  d.setDate(d.getDate() + n)
+  return d
+}
+
+export function isoOf(date: Date): string {
+  return date.toISOString().slice(0, 10)
+}
+
+export function dateForPlanIndex(startDate: Date, idx: number): Date {
+  return addDays(startDate, idx)
+}
+
+export function planIndexForDate(startDate: Date, date: Date): number {
+  return Math.floor((date.getTime() - startDate.getTime()) / 86400000)
+}
+
+export function todayMidnight(): Date {
+  const d = new Date()
+  d.setHours(0, 0, 0, 0)
+  return d
+}
+
+export function fmtDate(date: Date): string {
+  return date.toLocaleDateString('he-IL', { weekday: 'short', day: 'numeric', month: 'numeric' })
+}
