@@ -5,7 +5,7 @@ import { ref, onValue, push, set, remove } from 'firebase/database'
 import { db } from '@/lib/firebase/client'
 import { useAuth } from '@/lib/firebase/auth-context'
 import { useFamily } from '@/lib/firebase/use-family'
-import { PLAN_DAYS, BASE_FOODS, TOTAL_FOODS, isoOf, planIndexForDate, todayMidnight } from '@/lib/plan-data'
+import { PLAN_DAYS, BASE_FOODS, TOTAL_FOODS, FOOD_TIPS, isoOf, planIndexForDate, todayMidnight } from '@/lib/plan-data'
 import type { LogEntry } from '@/lib/firebase/types'
 import EntrySheet from '@/components/entry-sheet'
 import { useRouter } from 'next/navigation'
@@ -97,13 +97,23 @@ export default function TodayPage() {
                 <span style={{ fontSize: 30 }}>{planDay.week.allergen.emoji}</span>
                 <div><b style={{ display: 'block', fontSize: 14 }}>יום אלרגן: {planDay.week.allergen.name}</b><span style={{ fontSize: 11.5, color: 'var(--text-light)' }}>שבוע {planDay.week.n} · {planDay.dayLabel}</span></div>
               </div>
-              <div style={{ background: 'var(--allergen-pale)', border: '1px solid var(--allergen-border)', borderRadius: 10, padding: '8px 11px', fontSize: 12, color: 'var(--allergen)', fontWeight: 700, marginBottom: 10 }}>🚨 {planDay.week.allergen.food}</div>
+              <div style={{ background: 'var(--allergen-pale)', border: '1px solid var(--allergen-border)', borderRadius: 10, padding: '8px 11px', fontSize: 12, color: 'var(--allergen)', fontWeight: 700, marginBottom: 8 }}>🚨 {planDay.week.allergen.food}</div>
+              <div style={{ background: '#FFF9F0', border: '1px solid #F0E2C8', borderRadius: 10, padding: '8px 11px', fontSize: 11.5, color: 'var(--text-mid)', lineHeight: 1.6, marginBottom: 10 }}>
+                <b style={{ color: 'var(--text-dark)' }}>👨‍🍳 איך מכינים:</b> {planDay.week.allergen.recipe}
+              </div>
             </>
           ) : (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-              <span style={{ fontSize: 30 }}>{planDay.emoji}</span>
-              <div><b style={{ display: 'block', fontSize: 14 }}>{planDay.food}</b><span style={{ fontSize: 11.5, color: 'var(--text-light)' }}>שבוע {planDay.week.n} · {planDay.type === 'new' ? 'מזון חדש' : 'חזרה'}</span></div>
-            </div>
+            <>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+                <span style={{ fontSize: 30 }}>{planDay.emoji}</span>
+                <div><b style={{ display: 'block', fontSize: 14 }}>{planDay.food}</b><span style={{ fontSize: 11.5, color: 'var(--text-light)' }}>שבוע {planDay.week.n} · {planDay.type === 'new' ? 'מזון חדש' : 'חזרה'}</span></div>
+              </div>
+              {planDay.food && FOOD_TIPS[planDay.food] && (
+                <div style={{ background: '#FFF9F0', border: '1px solid #F0E2C8', borderRadius: 10, padding: '8px 11px', fontSize: 11.5, color: 'var(--text-mid)', lineHeight: 1.6, marginBottom: 10 }}>
+                  <b style={{ color: 'var(--text-dark)' }}>👨‍🍳 איך מכינים:</b> {FOOD_TIPS[planDay.food]}
+                </div>
+              )}
+            </>
           )}
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
             {[planDay.week.meals, planDay.week.qty, planDay.week.texture].map(p => (

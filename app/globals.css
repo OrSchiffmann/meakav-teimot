@@ -25,4 +25,23 @@ body {
   background: var(--bg);
   color: var(--text-dark);
   direction: rtl;
+  -webkit-font-smoothing: antialiased;
 }
+
+button {
+  transition: transform .1s ease, opacity .15s ease, filter .15s ease;
+  font-family: inherit;
+}
+button:active { transform: scale(.97); }
+button:hover { filter: brightness(1.05); }
+
+input, select, textarea {
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--sage) !important;
+  box-shadow: 0 0 0 3px var(--sage-pale);
+}
+
+::selection { background: var(--sage-pale); }

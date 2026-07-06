@@ -5,7 +5,7 @@ import { ref, onValue } from 'firebase/database'
 import { db } from '@/lib/firebase/client'
 import { useAuth } from '@/lib/firebase/auth-context'
 import { useFamily } from '@/lib/firebase/use-family'
-import { WEEKS, PLAN_DAYS, FOOD_TIPS, isoOf, dateForPlanIndex } from '@/lib/plan-data'
+import { WEEKS, PLAN_DAYS, FOOD_TIPS, WEEK_COMBOS, isoOf, dateForPlanIndex } from '@/lib/plan-data'
 import EntrySheet from '@/components/entry-sheet'
 import { useRouter } from 'next/navigation'
 
@@ -117,6 +117,16 @@ export default function PlanPage() {
                         <span style={{ fontWeight: 700 }}>{pd.emoji} {pd.food}:</span>{' '}
                         <span style={{ color: 'var(--text-mid)' }}>{FOOD_TIPS[pd.food!]}</span>
                       </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* שילובים טעימים */}
+                {WEEK_COMBOS[w.n] && (
+                  <div style={{ marginTop: 10, background: 'var(--sage-pale)', borderRadius: 10, padding: '9px 12px' }}>
+                    <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--sage)', marginBottom: 5 }}>🍲 שילובים טעימים השבוע (רק ממזונות שכבר הוכרו)</p>
+                    {WEEK_COMBOS[w.n].map(c => (
+                      <p key={c} style={{ fontSize: 11, color: 'var(--text-mid)', lineHeight: 1.7 }}>{c}</p>
                     ))}
                   </div>
                 )}
