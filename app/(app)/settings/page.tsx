@@ -51,16 +51,32 @@ export default function SettingsPage() {
   }
 
   async function sendInvite() {
-    if (!inviteEmail.trim()) return
-    const res = await fetch('/api/invite', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: inviteEmail, familyId }),
-    })
-    const data = await res.json()
-    setMsg(data.error ? 'שגיאה בשליחת הזמנה' : 'הזמנה נשלחה!')
-    if (!data.error) setInviteEmail('')
+    if (!inviteEmail.trim() || !familyId || !user) return
+    try {
+      const inviteRef = push(ref(db, `families/${familyId}/invites`))
+      await set(inviteRef, {
+        familyId, email: inviteEmail.trim(), status: 'pending',
+        invitedBy: user.uid, createdAt: new Date().toISOString(),
+      })
+      setInviteEmail('')
+      setMsg('ההזמנה נוצרה! שלחי את הקישור 👇')
+    } catch {
+      setMsg('שגיאה ביצירת הזמנה')
+    }
     setTimeout(() => setMsg(''), 3000)
+  }
+
+  const inviteLink = typeof window !== 'undefined' ? `${window.location.origin}/onboarding?family=${familyId}` : ''
+
+  async function copyInviteLink() {
+    await navigator.clipboard.writeText(inviteLink)
+    setMsg('הקישור הועתק!')
+    setTimeout(() => setMsg(''), 2000)
+  }
+
+  function shareWhatsApp() {
+    const text = encodeURIComponent(`היי! מזמינה אותך להצטרף למעקב הטעימות המשפחתי שלנו 🥄\n${inviteLink}`)
+    window.open(`https://wa.me/?text=${text}`, '_blank')
   }
 
   async function revokeInvite(inviteId: string) {
@@ -105,10 +121,20 @@ export default function SettingsPage() {
 
       {isOwner && (
         <div style={card}>
-          <h3 style={{ fontSize: 14, marginBottom: 10 }}>הזמנת בני משפחה</h3>
+          <h3 style={{ fontSize: 14, marginBottom: 6 }}>הזמנת בני משפחה</h3>
+          <p style={{ fontSize: 11.5, color: 'var(--text-mid)', marginBottom: 12, lineHeight: 1.5 }}>
+            שלחי את קישור ההצטרפות למי שתרצי — בן/בת זוג, סבתא, מטפלת. מי שנכנס דרך הקישור ומתחבר עם Google מצטרף למשפחה.
+          </p>
           <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
-            <input value={inviteEmail} onChange={e => setInviteEmail(e.target.value)} placeholder="כתובת מייל" type="email" style={{ ...inp, flex: 1 }} />
-            <button onClick={sendInvite} style={{ ...primaryBtn, flex: 'none', width: 'auto', padding: '9px 14px' }}>שלח</button>
+            <button onClick={shareWhatsApp} style={{ ...primaryBtn, flex: 1, background: '#25D366' }}>💬 שיתוף בוואטסאפ</button>
+            <button onClick={copyInviteLink} style={{ ...primaryBtn, flex: 1 }}>📋 העתקת קישור</button>
+          </div>
+          <div style={{ background: '#F7F5EE', borderRadius: 9, padding: '8px 10px', fontSize: 10.5, color: 'var(--text-light)', wordBreak: 'break-all', marginBottom: 12, direction: 'ltr', textAlign: 'left' }}>
+            {inviteLink}
+          </div>
+          <div style={{ display: 'flex', gap: 8, marginBottom: 4 }}>
+            <input value={inviteEmail} onChange={e => setInviteEmail(e.target.value)} placeholder="רישום מייל של המוזמן/ת (אופציונלי)" type="email" style={{ ...inp, flex: 1 }} />
+            <button onClick={sendInvite} style={{ ...primaryBtn, flex: 'none', width: 'auto', padding: '9px 14px' }}>רשמי</button>
           </div>
           {invites.map(inv => (
             <div key={inv.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 12, padding: '6px 0' }}>
