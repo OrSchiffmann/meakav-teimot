@@ -1,6 +1,6 @@
 'use client'
 
-import { signInWithPopup } from 'firebase/auth'
+import { signInWithPopup, signInWithRedirect, getRedirectResult } from 'firebase/auth'
 import { auth, googleProvider } from '@/lib/firebase/client'
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
@@ -12,6 +12,24 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  // אחרי redirect חזרה מגוגל
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    if (window.location.hostname !== 'localhost') {
+      setLoading(true)
+      getRedirectResult(auth)
+        .then(result => {
+          if (!result) setLoading(false)
+          // אם יש תוצאה — user יתעדכן ב-auth-context ויטפל בניווט
+        })
+        .catch(() => {
+          setError('שגיאה בהתחברות, נסי שוב')
+          setLoading(false)
+        })
+    }
+  }, [])
+
+  // ניווט כשמשתמש מחובר
   useEffect(() => {
     if (user) router.push('/onboarding')
   }, [user, router])
@@ -19,11 +37,16 @@ export default function LoginPage() {
   async function signInWithGoogle() {
     setLoading(true)
     setError('')
+    const isLocal = window.location.hostname === 'localhost'
     try {
-      await signInWithPopup(auth, googleProvider)
-      // ניווט יקרה דרך useEffect כשה-AuthProvider יעדכן את user
+      if (isLocal) {
+        await signInWithPopup(auth, googleProvider)
+        // ניווט דרך useEffect של user
+      } else {
+        await signInWithRedirect(auth, googleProvider)
+        // הדף יעזוב לגוגל ויחזור
+      }
     } catch (err: unknown) {
-      console.error('login error:', err)
       const code = (err as { code?: string }).code
       if (code !== 'auth/popup-closed-by-user') {
         setError('שגיאה בהתחברות, נסי שוב')
