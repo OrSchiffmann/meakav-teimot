@@ -99,6 +99,7 @@ export default function PlanPage() {
                           <span style={{ fontSize: 14, display: 'block', margin: '2px 0' }}>{isAllergen ? w.allergen.emoji : pd.emoji}</span>
                           <div style={{ fontSize: 8, color: isAllergen ? 'var(--allergen)' : 'var(--text-dark)', fontWeight: isAllergen ? 700 : 400, lineHeight: 1.1, minHeight: 20 }}>
                             {isAllergen ? w.allergen.name : pd.food}
+                            {pd.note && <div style={{ fontSize: 6.5, fontWeight: 400, color: 'var(--text-light)', marginTop: 1 }}>{pd.note}</div>}
                           </div>
                         </div>
                         {tip && pd.type === 'new' && (

@@ -95,7 +95,7 @@ export default function TodayPage() {
             <>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
                 <span style={{ fontSize: 30 }}>{planDay.week.allergen.emoji}</span>
-                <div><b style={{ display: 'block', fontSize: 14 }}>יום אלרגן: {planDay.week.allergen.name}</b><span style={{ fontSize: 11.5, color: 'var(--text-light)' }}>שבוע {planDay.week.n} · {planDay.dayLabel}</span></div>
+                <div><b style={{ display: 'block', fontSize: 14 }}>יום אלרגן: {planDay.week.allergen.name}</b><span style={{ fontSize: 11.5, color: 'var(--text-light)' }}>שבוע {planDay.week.n} · {planDay.dayLabel}{planDay.note ? ` · ${planDay.note}` : ''}</span></div>
               </div>
               <div style={{ background: 'var(--allergen-pale)', border: '1px solid var(--allergen-border)', borderRadius: 10, padding: '8px 11px', fontSize: 12, color: 'var(--allergen)', fontWeight: 700, marginBottom: 8 }}>🚨 {planDay.week.allergen.food}</div>
               <div style={{ background: '#FFF9F0', border: '1px solid #F0E2C8', borderRadius: 10, padding: '8px 11px', fontSize: 11.5, color: 'var(--text-mid)', lineHeight: 1.6, marginBottom: 10 }}>
@@ -106,7 +106,7 @@ export default function TodayPage() {
             <>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
                 <span style={{ fontSize: 30 }}>{planDay.emoji}</span>
-                <div><b style={{ display: 'block', fontSize: 14 }}>{planDay.food}</b><span style={{ fontSize: 11.5, color: 'var(--text-light)' }}>שבוע {planDay.week.n} · {planDay.type === 'new' ? 'מזון חדש' : 'חזרה'}</span></div>
+                <div><b style={{ display: 'block', fontSize: 14 }}>{planDay.food}</b><span style={{ fontSize: 11.5, color: 'var(--text-light)' }}>שבוע {planDay.week.n} · {planDay.type === 'new' ? 'מזון חדש' : 'חזרה'}{planDay.note ? ` · ${planDay.note}` : ''}</span></div>
               </div>
               {planDay.food && FOOD_TIPS[planDay.food] && (
                 <div style={{ background: '#FFF9F0', border: '1px solid #F0E2C8', borderRadius: 10, padding: '8px 11px', fontSize: 11.5, color: 'var(--text-mid)', lineHeight: 1.6, marginBottom: 10 }}>
