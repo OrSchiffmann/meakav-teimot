@@ -7,6 +7,7 @@ import { useAuth } from '@/lib/firebase/auth-context'
 import { useFamily } from '@/lib/firebase/use-family'
 import { WEEKS, PLAN_DAYS, FOOD_TIPS, WEEK_COMBOS, isoOf, dateForPlanIndex } from '@/lib/plan-data'
 import EntrySheet from '@/components/entry-sheet'
+import PageHeader from '@/components/page-header'
 import { useRouter } from 'next/navigation'
 
 export default function PlanPage() {
@@ -37,10 +38,7 @@ export default function PlanPage() {
 
   return (
     <>
-      <div style={{ background: 'linear-gradient(135deg,var(--sage),var(--sage-light))', color: '#fff', padding: '26px 20px 20px', textAlign: 'center', borderRadius: '0 0 20px 20px', margin: '-14px -14px 14px' }}>
-        <h1 style={{ fontSize: 19, fontWeight: 800 }}>📋 תכנית 8 השבועות</h1>
-        <p style={{ fontSize: 12, opacity: 0.9, marginTop: 3 }}>לחצו על יום לפתיחת תיעוד</p>
-      </div>
+      <PageHeader emoji="📋" title="תכנית 8 השבועות" subtitle="לחצו על יום לפתיחת תיעוד" />
       <div style={{ background: '#FFF7E8', border: '1px solid #F0DDB0', borderRadius: 12, padding: '10px 13px', fontSize: 11.5, color: '#7A5F1E', marginBottom: 14 }}>
         💡 לחיצה על כל יום בתכנית פותחת תיעוד עבור התאריך המתאים לו בפועל.
       </div>

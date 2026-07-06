@@ -21,11 +21,16 @@
 * { box-sizing: border-box; }
 
 body {
-  font-family: -apple-system, 'Segoe UI', Assistant, Arial, sans-serif;
+  font-family: var(--font-body), -apple-system, 'Segoe UI', Assistant, Arial, sans-serif;
   background: var(--bg);
   color: var(--text-dark);
   direction: rtl;
   -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading), var(--font-body), sans-serif;
+  letter-spacing: -0.2px;
 }
 
 button {

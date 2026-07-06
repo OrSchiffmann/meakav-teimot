@@ -1,10 +1,9 @@
+import PageHeader from '@/components/page-header'
+
 export default function SafetyPage() {
   return (
     <>
-      <div style={{ background: 'linear-gradient(135deg,var(--sage),var(--sage-light))', color: '#fff', padding: '26px 20px 20px', textAlign: 'center', borderRadius: '0 0 20px 20px', margin: '-14px -14px 14px' }}>
-        <h1 style={{ fontSize: 19, fontWeight: 800 }}>⚕️ מדריך בטיחות</h1>
-        <p style={{ fontSize: 12, opacity: 0.9, marginTop: 3 }}>כל מה שחשוב לדעת לפני ותוך כדי</p>
-      </div>
+      <PageHeader emoji="🛡️" title="מדריך בטיחות" subtitle="כל מה שחשוב לדעת לפני ותוך כדי" />
 
       <Section title="✅ סימני מוכרות למזון מוצק (בסביבות 6 חודשים)">
         <ul style={ul}>

@@ -8,6 +8,7 @@ import { useFamily } from '@/lib/firebase/use-family'
 import { PLAN_DAYS, BASE_FOODS, TOTAL_FOODS, FOOD_TIPS, isoOf, planIndexForDate, todayMidnight } from '@/lib/plan-data'
 import type { LogEntry } from '@/lib/firebase/types'
 import EntrySheet from '@/components/entry-sheet'
+import PageHeader from '@/components/page-header'
 import { useRouter } from 'next/navigation'
 
 export default function TodayPage() {
@@ -73,10 +74,7 @@ export default function TodayPage() {
 
   return (
     <>
-      <div style={{ background: 'linear-gradient(135deg,var(--sage),var(--sage-light))', color: '#fff', padding: '26px 20px 20px', textAlign: 'center', borderRadius: '0 0 20px 20px', margin: '-14px -14px 14px' }}>
-        <h1 style={{ fontSize: 19, fontWeight: 800 }}>🥄 {family.childName ? `טעימות של ${family.childName}` : 'מעקב טעימות'}</h1>
-        <p style={{ fontSize: 12, opacity: 0.9, marginTop: 3 }}>היום · {dateISO}</p>
-      </div>
+      <PageHeader emoji="🥄" title={family.childName ? `הטעימות של ${family.childName}` : 'מעקב טעימות'} subtitle={`היום · ${new Date().toLocaleDateString('he-IL', { weekday: 'long', day: 'numeric', month: 'long' })}`} />
 
       <div style={card}>
         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'var(--text-mid)' }}>

@@ -40,10 +40,12 @@ export default function LoginPage() {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
       <div style={{ maxWidth: 360, width: '100%' }}>
-        <div style={{ background: 'linear-gradient(135deg,var(--sage),var(--sage-light))', borderRadius: 20, padding: '32px 24px', textAlign: 'center', color: '#fff', marginBottom: 24 }}>
-          <div style={{ fontSize: 48, marginBottom: 8 }}>🥄</div>
-          <h1 style={{ fontSize: 22, fontWeight: 800, marginBottom: 4 }}>מעקב טעימות</h1>
-          <p style={{ fontSize: 13, opacity: 0.9 }}>תכנית טעימות משפחתית לתינוקת</p>
+        <div style={{ position: 'relative', overflow: 'hidden', background: 'linear-gradient(140deg, #587E59 0%, #6B8E6B 45%, #94B694 100%)', borderRadius: 24, padding: '36px 24px', textAlign: 'center', color: '#fff', marginBottom: 24, boxShadow: '0 10px 30px rgba(107,142,107,.3)' }}>
+          <div style={{ position: 'absolute', top: -34, left: -30, width: 120, height: 120, borderRadius: '50%', background: 'rgba(255,255,255,.10)' }} />
+          <div style={{ position: 'absolute', bottom: -50, right: -24, width: 150, height: 150, borderRadius: '50%', background: 'rgba(255,255,255,.07)' }} />
+          <div style={{ fontSize: 50, marginBottom: 8, position: 'relative', filter: 'drop-shadow(0 3px 6px rgba(0,0,0,.15))' }}>🥄</div>
+          <h1 style={{ fontSize: 24, fontWeight: 800, marginBottom: 5, position: 'relative', textShadow: '0 1px 2px rgba(0,0,0,.08)' }}>מעקב טעימות</h1>
+          <p style={{ fontSize: 13, opacity: 0.92, position: 'relative', fontWeight: 300 }}>תכנית טעימות משפחתית לתינוקת</p>
         </div>
         <div style={{ background: 'var(--white)', border: '1px solid var(--border)', borderRadius: 16, padding: 20 }}>
           <p style={{ fontSize: 13, color: 'var(--text-mid)', marginBottom: 16, textAlign: 'center' }}>

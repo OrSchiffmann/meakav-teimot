@@ -6,6 +6,7 @@ import { db } from '@/lib/firebase/client'
 import { useFamily } from '@/lib/firebase/use-family'
 import { fmtDate } from '@/lib/plan-data'
 import type { LogEntry } from '@/lib/firebase/types'
+import PageHeader from '@/components/page-header'
 
 export default function HistoryPage() {
   const { familyId, loading } = useFamily()
@@ -30,10 +31,7 @@ export default function HistoryPage() {
 
   return (
     <>
-      <div style={{ background: 'linear-gradient(135deg,var(--sage),var(--sage-light))', color: '#fff', padding: '26px 20px 20px', textAlign: 'center', borderRadius: '0 0 20px 20px', margin: '-14px -14px 14px' }}>
-        <h1 style={{ fontSize: 19, fontWeight: 800 }}>📖 היסטוריית תיעוד</h1>
-        <p style={{ fontSize: 12, opacity: 0.9, marginTop: 3 }}>כל הימים שתועדו, מהאחרון לראשון</p>
-      </div>
+      <PageHeader emoji="📖" title="היסטוריית תיעוד" subtitle="כל הימים שתועדו, מהאחרון לראשון" />
 
       {loading && <p style={{ textAlign: 'center', color: 'var(--text-light)', fontSize: 12 }}>טוען...</p>}
       {!loading && days.length === 0 && (

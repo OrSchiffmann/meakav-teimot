@@ -8,6 +8,7 @@ import { useAuth } from '@/lib/firebase/auth-context'
 import { useFamily } from '@/lib/firebase/use-family'
 import { useRouter } from 'next/navigation'
 import type { Invite, FamilyMember } from '@/lib/firebase/types'
+import PageHeader from '@/components/page-header'
 
 export default function SettingsPage() {
   const { user } = useAuth()
@@ -91,9 +92,7 @@ export default function SettingsPage() {
 
   return (
     <>
-      <div style={{ background: 'linear-gradient(135deg,var(--sage),var(--sage-light))', color: '#fff', padding: '26px 20px 20px', textAlign: 'center', borderRadius: '0 0 20px 20px', margin: '-14px -14px 14px' }}>
-        <h1 style={{ fontSize: 19, fontWeight: 800 }}>⚙️ הגדרות</h1>
-      </div>
+      <PageHeader emoji="⚙️" title="הגדרות" subtitle="משפחה, שיתוף והעדפות" />
 
       <div style={card}>
         <h3 style={{ fontSize: 14, marginBottom: 12 }}>הגדרות המשפחה</h3>
