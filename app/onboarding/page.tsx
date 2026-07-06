@@ -19,10 +19,6 @@ export default function OnboardingPage() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    if (!loading && !user) router.push('/login')
-  }, [user, loading, router])
-
-  useEffect(() => {
     if (!user) return
     get(ref(db, `users/${user.uid}/familyId`)).then(snap => {
       if (snap.val()) router.push('/')
