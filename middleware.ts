@@ -2,12 +2,16 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
-  const session = request.cookies.get('session')?.value
 
-  if (pathname.startsWith('/login') || pathname.startsWith('/api/auth')) {
+  if (
+    pathname.startsWith('/login') ||
+    pathname.startsWith('/api/') ||
+    pathname.startsWith('/onboarding')
+  ) {
     return NextResponse.next()
   }
 
+  const session = request.cookies.get('session')?.value
   if (!session) {
     return NextResponse.redirect(new URL('/login', request.url))
   }

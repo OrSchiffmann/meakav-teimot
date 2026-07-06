@@ -17,18 +17,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     return onIdTokenChanged(auth, async (u) => {
-      if (u) {
-        const token = await u.getIdToken()
-        await fetch('/api/auth/session', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token }),
-        })
-      } else {
-        await fetch('/api/auth/session', { method: 'DELETE' })
-      }
       setUser(u)
       setLoading(false)
+      // session cookie בצד שרת — בלי לחסום את הניווט
+      if (u) {
+        u.getIdToken().then(token =>
+          fetch('/api/auth/session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token }),
+          })
+        ).catch(console.error)
+      } else {
+        fetch('/api/auth/session', { method: 'DELETE' }).catch(() => {})
+      }
     })
   }, [])
 
