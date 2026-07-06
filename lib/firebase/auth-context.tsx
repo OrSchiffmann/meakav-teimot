@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from 'react'
-import { onIdTokenChanged, type User } from 'firebase/auth'
+import { onIdTokenChanged, getRedirectResult, type User } from 'firebase/auth'
 import { auth } from './client'
 
 interface AuthContextValue {
@@ -16,22 +16,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    return onIdTokenChanged(auth, async (u) => {
-      setUser(u)
-      setLoading(false)
-      // session cookie בצד שרת — בלי לחסום את הניווט
-      if (u) {
-        u.getIdToken().then(token =>
-          fetch('/api/auth/session', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token }),
-          })
-        ).catch(console.error)
-      } else {
-        fetch('/api/auth/session', { method: 'DELETE' }).catch(() => {})
-      }
-    })
+    let unsub: (() => void) | undefined
+
+    // קודם בודקים redirect result, רק אז מאזינים לשינויים
+    getRedirectResult(auth)
+      .catch(() => null)
+      .finally(() => {
+        unsub = onIdTokenChanged(auth, (u) => {
+          setUser(u)
+          setLoading(false)
+          if (u) {
+            u.getIdToken().then(token =>
+              fetch('/api/auth/session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token }),
+              })
+            ).catch(console.error)
+          } else {
+            fetch('/api/auth/session', { method: 'DELETE' }).catch(() => {})
+          }
+        })
+      })
+
+    return () => { unsub?.() }
   }, [])
 
   return <AuthContext.Provider value={{ user, loading }}>{children}</AuthContext.Provider>
