@@ -31,16 +31,15 @@ function LoginInner() {
   async function signInWithGoogle() {
     setSigningIn(true)
     setError('')
-    const isLocal = window.location.hostname === 'localhost'
     try {
-      if (isLocal) {
-        await signInWithPopup(auth, googleProvider)
-      } else {
-        await signInWithRedirect(auth, googleProvider)
-      }
+      await signInWithPopup(auth, googleProvider)
     } catch (err: unknown) {
       const code = (err as { code?: string }).code
-      if (code !== 'auth/popup-closed-by-user') {
+      if (code === 'auth/popup-blocked') {
+        // דפדפן חוסם חלונות קופצים — ננסה redirect כמוצא אחרון
+        try { await signInWithRedirect(auth, googleProvider); return } catch { /* ignore */ }
+      }
+      if (code !== 'auth/popup-closed-by-user' && code !== 'auth/cancelled-popup-request') {
         setError('שגיאה בהתחברות, נסי שוב')
       }
       setSigningIn(false)
