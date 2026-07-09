@@ -193,6 +193,22 @@ export const PLAN_DAYS: FlatPlanDay[] = WEEKS.flatMap((w) =>
   }))
 )
 
+// זיהוי אוטומטי של מזון אלרגני לפי מילות מפתח (ניתן לדריסה ידנית במסך המזונות)
+const ALLERGEN_KEYWORDS = [
+  'גלוטן', 'חיטה', 'בייביביס', 'שיבולת שועל', 'סולת', 'פסטה', 'לחם', 'דגן',
+  'ביצה', 'חלמון', 'חלבון ביצה',
+  'יוגורט', 'חלב', 'גבינה',
+  'בוטנים', 'במבה',
+  'שקדים', 'קשיו', 'אגוז', 'לוז', 'פקאן',
+  'טחינה', 'שומשום',
+  'דג', 'סלמון', 'טונה',
+  'טופו', 'סויה', 'אדממה',
+]
+
+export function isAllergenFood(name: string): boolean {
+  return ALLERGEN_KEYWORDS.some(k => name.includes(k))
+}
+
 export function addDays(date: Date, n: number): Date {
   const d = new Date(date)
   d.setDate(d.getDate() + n)
